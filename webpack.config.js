@@ -1,14 +1,16 @@
+/* eslint-disable no-undef */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// eslint-disable-next-line no-unused-vars
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: './src/index.tsx',
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
   module: {
     rules: [
@@ -19,12 +21,12 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-env", "@babel/preset-react"]
-            }
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+            },
           },
           {
-            loader: 'ts-loader'
-          }
+            loader: 'ts-loader',
+          },
         ],
       },
       {
@@ -47,13 +49,13 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/,
-        loader: "file-loader",
+        loader: 'file-loader',
       },
     ],
   },
-  devtool: "inline-source-map",
+  devtool: 'inline-source-map',
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"]
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -61,18 +63,18 @@ module.exports = {
       filename: './index.html',
     }),
     // Uncomment when have to analyze bundle composition
-    new BundleAnalyzerPlugin({
-        analyzerPort: 8000,
-        openAnalyzer: false,
-    }),
+    // new BundleAnalyzerPlugin({
+    //   analyzerPort: 8000,
+    //   openAnalyzer: false,
+    // }),
     new ESLintPlugin(),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
   ],
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, 'dist'),
     port: 3000,
-    open: true
+    open: true,
   },
 };
