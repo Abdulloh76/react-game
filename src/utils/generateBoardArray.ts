@@ -1,4 +1,4 @@
-function generateBoardArray(width: number, height: number, minesNumber: number) {
+export default function generateBoardArray(width: number, height: number, minesNumber: number) {
   const arr: number[][] = Array.from(Array(height), () => Array(width).fill(0));
   let remainingMines: number = minesNumber;
 
@@ -26,8 +26,6 @@ function generateBoardArray(width: number, height: number, minesNumber: number) 
   }
   return arr;
 }
-
-export default generateBoardArray;
 
 // generateBoardArray(9, 9, 10) ~~
 // [ 1,  1,  1,  0,  0,  1,  1,  1,  0]
