@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { ReactComponent as Mine } from '../assets/mine.svg'
 
 interface Props {
-  data: number
+  data: number;
+  trackingArray: number[][];
+  x: number;
+  y:number;
 }
 
-export default function Cell(props: Props) {
-  let [visible, setVisibility] = useState(false)
+export default function Cell({ data, trackingArray, x, y }:Props) {
+  let [visible, setVisibility] = useState(Boolean(trackingArray[x][y]))
   
   const content = (value: number) => {
     if (value === -1) return <Mine />;
@@ -16,11 +19,12 @@ export default function Cell(props: Props) {
 
   const clickHandler = () => {
     setVisibility(true)
+    trackingArray[x][y] = 1;
   }
 
   return (
     <div className={`board__cell ${visible?'cell-visited':''}`} onClick={clickHandler}>
-      {content(props.data)}
+      {content(data)}
     </div>
   );
 }
