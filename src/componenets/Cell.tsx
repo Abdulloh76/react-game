@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { ReactComponent as Mine } from '../assets/mine.svg'
+import { BoardContext } from './Board';
 
 interface Props {
   data: number;
-  trackingArray: number[][];
   x: number;
   y:number;
 }
 
-export default function Cell({ data, trackingArray, x, y }:Props) {
-  let [visible, setVisibility] = useState(Boolean(trackingArray[x][y]))
-  
+export default function Cell({ data, x, y }:Props) {
+  const [trackingArray, cellClick] = useContext(BoardContext)
+
   const content = (value: number) => {
     if (value === -1) return <Mine />;
     else if(value === 0) return <p></p>
@@ -18,12 +18,14 @@ export default function Cell({ data, trackingArray, x, y }:Props) {
   };
 
   const clickHandler = () => {
-    setVisibility(true)
-    trackingArray[x][y] = 1;
+    if (data === -1) console.log('you clicked the mine');
+    cellClick(x, y)
+    trackingArray[x][y]=1;
+    localStorage.setItem('trackingArray', JSON.stringify(trackingArray))
   }
 
   return (
-    <div className={`board__cell ${visible?'cell-visited':''}`} onClick={clickHandler}>
+    <div className={`board__cell ${Boolean(trackingArray[x][y])?'cell-visited':''}`} onClick={clickHandler}>
       {content(data)}
     </div>
   );
