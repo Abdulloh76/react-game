@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ReactComponent as Mine } from '../assets/mine.svg'
+import { ReactComponent as SettingsIcon } from '../assets/settings.svg'
 import { GlobalContext, GlobalState } from './GlobalOptions'
 import Modal from './Modal'
 
@@ -8,7 +8,7 @@ export default function Settings() {
 
   return (
     <div className="header__settings"  onClick={() => setModalShow(true)}>
-      <Mine />
+      <SettingsIcon />
       <Modal show={modalShow} setShow={setModalShow}>
         <div className="settings">
           {modalShow}

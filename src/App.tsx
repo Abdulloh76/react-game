@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
+import './styles/header.scss'
 import GlobalProvider from './componenets/GlobalOptions'
 import MinesNumber from './componenets/RemainingMines'
 import Toggler from './componenets/Toggler'
 import NewGame from './componenets/NewGame'
 import Settings from './componenets/Settings'
 import Timer from './componenets/Timer'
-import Board from './componenets/Board'
-import './styles/header.scss'
 import TopScores from './componenets/TopScores';
+import RecordGame from './componenets/RecordGame';
+import Board from './componenets/Board'
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
         <Settings />
         <Timer isStarted={true} />
         <TopScores />
+        <RecordGame />
       </div>
       <Board />
     </GlobalProvider>
