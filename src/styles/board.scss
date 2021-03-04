@@ -42,8 +42,13 @@
     }
     
     svg {
-      width: 85%;
-      height: 85%
+      width: 80%;
+      height: 80%
+    }
+
+    .redflag {
+      position: absolute;
+      z-index: 10;
     }
   }
 }
