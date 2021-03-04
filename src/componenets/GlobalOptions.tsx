@@ -25,9 +25,11 @@ interface Props {
 
 export default function GlobalProvider({ children }: Props) {
   const [modalShow, setModal] = useState(false)
-  const [remainingMines, setMinesNumber] = useState(40)
+  const remMines = JSON.parse(sessionStorage.getItem('mines') as string) || 40;
+  const [remainingMines, setMinesNumber] = useState(remMines)
   const [toggler, setToggler] = useState(true) // true->mine, false->flag
-  const [timer, setRunTimer] = useState(0)
+  const passed = JSON.parse(sessionStorage.getItem('timer') as string) || 0;
+  const [timer, setRunTimer] = useState(passed)
 
   // game options
   const [difficulty, setDifficulty] = useState([16,16,40])
@@ -35,9 +37,15 @@ export default function GlobalProvider({ children }: Props) {
   const [startClick, setStartClick] = useState(false)
 
   const setModalShow = (vis: boolean) => setModal(vis)
-  const setRemainingMines = (mines: number) => setMinesNumber(mines)
+  const setRemainingMines = (mines: number) => {
+    setMinesNumber(mines)
+    sessionStorage.setItem('mines', JSON.stringify(mines))
+  }
   const changeToggler = (toggle: boolean) => setToggler(toggle)
-  const startTimer = () => setRunTimer(timer + 1)
+  const startTimer = () => {
+    setRunTimer(timer + 1)
+    sessionStorage.setItem('timer', JSON.stringify(timer))
+  }
   const changeDifficulty = (diff: string) => {
     // 10,10,9; 16,16,40; 24,24,99
     switch(diff) {

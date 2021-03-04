@@ -11,11 +11,11 @@ export const BoardContext = React.createContext<
 export default function Board() {
   const { difficulty } = useContext(GlobalContext) as GlobalState
 
-  const LSboard = JSON.parse(localStorage.getItem('boardArray') as string);
+  const LSboard = JSON.parse(sessionStorage.getItem('boardArray') as string);
   const boardArray: number[][] = LSboard || generateBoardArray(difficulty);
 
   const [trackingArray, setTrackArr] = useState(
-    JSON.parse(localStorage.getItem('trackingArray') as string) ||
+    JSON.parse(sessionStorage.getItem('trackingArray') as string) ||
       Array.from(Array(difficulty[0]), () => Array(difficulty[1]).fill(0))
   );
 
@@ -45,12 +45,12 @@ export default function Board() {
   };
 
   useEffect(() => {
-    localStorage.setItem('boardArray', JSON.stringify(boardArray));
+    sessionStorage.setItem('boardArray', JSON.stringify(boardArray));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   window.addEventListener('beforeunload', () => {
-    // localStorage.setItem('trackingArray', JSON.stringify(trackingArray))
+    // sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray))
   });
 
   return (
