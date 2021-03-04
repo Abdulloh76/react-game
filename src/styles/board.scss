@@ -1,9 +1,15 @@
 .board {
+  width: min-content;
+  margin: auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  font-size: 1.6rem;
+  
   &__row {
     display: flex;
   }
+
   &__cell {
     position: relative;
     box-sizing: border-box;
@@ -16,7 +22,6 @@
     align-items: center;
     
     color: #fff;
-    border: 4px solid rgb(136, 136, 136);
     
     cursor: pointer;
     user-select: none;
@@ -35,12 +40,14 @@
       border-style: solid;
       border-color: rgb(220, 220, 220) rgb(51, 51, 51) rgb(51, 51, 51) rgb(220, 220, 220);
     }
+    
+    svg {
+      width: 85%;
+      height: 85%
+    }
   }
 }
-svg {
-  width: 85%;
-  height: 85%
-}
+
 .cell-visited {
   background-color: rgb(85, 85, 85);
   border: 1px solid black;
