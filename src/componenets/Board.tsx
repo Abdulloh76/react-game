@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import generateBoardArray from '../utils/generateBoardArray';
 import Cell from './Cell';
-import './board.scss';
+import '../styles/board.scss';
+import { GlobalContext, GlobalState } from './GlobalOptions';
 
 export const BoardContext = React.createContext<
   [Number[][], (x: number, y: number) => void]
 >([[[]], (x: number, y: number) => {}]);
 
 export default function Board() {
+  const { difficulty } = useContext(GlobalContext) as GlobalState
+
   const LSboard = JSON.parse(localStorage.getItem('boardArray') as string);
-  const boardArray: number[][] = LSboard || generateBoardArray(9, 9, 10);
+  const boardArray: number[][] = LSboard || generateBoardArray(difficulty);
 
   const [trackingArray, setTrackArr] = useState(
     JSON.parse(localStorage.getItem('trackingArray') as string) ||
-      Array.from(Array(9), () => Array(9).fill(0))
+      Array.from(Array(difficulty[0]), () => Array(difficulty[1]).fill(0))
   );
 
   const spreading = (x: number, y: number) => {
