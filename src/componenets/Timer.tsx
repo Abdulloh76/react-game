@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext, GlobalState } from './GlobalOptions';
 
-interface Props {
-  isStarted: Boolean;
-}
-
-export default function Timer({isStarted}: Props) {
-  const [value, setValue] = useState(0);
-   
-  setTimeout(() => {
-    setValue(value + 1);
+export default function Timer() {
+  const { timer, startTimer } = useContext(GlobalContext) as GlobalState
+  if (timer !== 0) setTimeout(() => {
+    startTimer()
   }, 1000);
-  
-  return <div className='header__timer'>{value}</div>;
+  return <div className='header__timer'>{timer}</div>;
 }

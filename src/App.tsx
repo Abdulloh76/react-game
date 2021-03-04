@@ -20,7 +20,7 @@ export default function App() {
         <Toggler />
         <NewGame />
         <Settings />
-        <Timer isStarted={true} />
+        <Timer />
         <TopScores />
         <RecordGame />
       </div>

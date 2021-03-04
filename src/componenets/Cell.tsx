@@ -12,7 +12,7 @@ interface Props {
 
 export default function Cell({ data, x, y }: Props) {
   const [trackingArray, cellClick] = useContext(BoardContext);
-  const { toggler } = useContext(GlobalContext) as GlobalState;
+  const { toggler, remainingMines, setRemainingMines, timer, startTimer } = useContext(GlobalContext) as GlobalState;
 
   const [flag, setFlag] = useState(Boolean(trackingArray[x][y] === -1));
 
@@ -24,16 +24,24 @@ export default function Cell({ data, x, y }: Props) {
 
   const putFlag = () => (flag ? <RedFlag /> : null);
 
+  const changeFlagStatus = () => {
+    setFlag(!flag);
+    trackingArray[x][y] = flag ? 0 : -1;
+    if (trackingArray[x][y] === 0) setRemainingMines(remainingMines + 1)
+    else if (trackingArray[x][y] === -1) setRemainingMines(remainingMines - 1)
+  }
+
   const clickHandler = () => {
+    if (timer === 0) startTimer()
+
     if (!toggler) {
-      setFlag(!flag);
-      trackingArray[x][y] = flag ? 0 : -1;
+      changeFlagStatus()
     } else {
       if (data === -1) console.log('you clicked the mine');
       cellClick(x, y);
       trackingArray[x][y] = 1;
-      localStorage.setItem('trackingArray', JSON.stringify(trackingArray));
     }
+    localStorage.setItem('trackingArray', JSON.stringify(trackingArray));
   };
 
   return (
@@ -44,8 +52,7 @@ export default function Cell({ data, x, y }: Props) {
       onClick={clickHandler}
       onContextMenu={(e) => {
         e.preventDefault()
-        setFlag(!flag);
-        trackingArray[x][y] = flag ? 0 : -1;
+        changeFlagStatus()
       }}
     >
       {content(data)}

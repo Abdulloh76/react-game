@@ -9,8 +9,8 @@ export interface GlobalState {
   setRemainingMines: (param: number) => void
   toggler: boolean
   changeToggler: (param: boolean) => void
-  runTimer: boolean
-  startTimer: (param: boolean) => void
+  timer: number
+  startTimer: () => void
   difficulty: number[]
   changeDifficulty: (param: string) => void
   boardTheme: string
@@ -27,7 +27,7 @@ export default function GlobalProvider({ children }: Props) {
   const [modalShow, setModal] = useState(false)
   const [remainingMines, setMinesNumber] = useState(40)
   const [toggler, setToggler] = useState(true) // true->mine, false->flag
-  const [runTimer, setRunTimer] = useState(false)
+  const [timer, setRunTimer] = useState(0)
 
   // game options
   const [difficulty, setDifficulty] = useState([16,16,40])
@@ -37,7 +37,7 @@ export default function GlobalProvider({ children }: Props) {
   const setModalShow = (vis: boolean) => setModal(vis)
   const setRemainingMines = (mines: number) => setMinesNumber(mines)
   const changeToggler = (toggle: boolean) => setToggler(toggle)
-  const startTimer = (run: boolean) => setRunTimer(run)
+  const startTimer = () => setRunTimer(timer + 1)
   const changeDifficulty = (diff: string) => {
     // 10,10,9; 16,16,40; 24,24,99
     switch(diff) {
@@ -57,7 +57,7 @@ export default function GlobalProvider({ children }: Props) {
       setRemainingMines,
       toggler,
       changeToggler,
-      runTimer,
+      timer,
       startTimer,
       difficulty,
       changeDifficulty,
