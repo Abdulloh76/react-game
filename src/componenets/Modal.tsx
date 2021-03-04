@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
+import '../styles/modal.scss'
 
 interface Props {
+  title: string;
   children: JSX.Element;
   show: boolean;
   setShow: (value: boolean) => void;
 }
 
-export default function Modal({ children, show, setShow }: Props) {
+export default function Modal({ title, children, show, setShow }: Props) {
   const closeByEsc = (e: KeyboardEvent) => {
     if (e.keyCode === 27) {
       setShow(false);
@@ -25,11 +27,11 @@ export default function Modal({ children, show, setShow }: Props) {
     <div className="modal" onClick={() => setShow(false)}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h4 className="modal-title">Modal Title</h4>
+          <h4 className="modal-title">{title}</h4>
         </div>
         <div className="modal-body">{children}</div>
         <div className="modal-footer">
-          <button className="close-modal" onClick={() => setShow(false)}></button>
+          <button className="close-modal" onClick={() => setShow(false)}>Close</button>
         </div>
       </div>
     </div>
