@@ -13,7 +13,7 @@ export interface BoardContextType {
 export const BoardContext = React.createContext<BoardContextType | null>(null);
 
 export default function Board() {
-  const { difficulty } = useContext(GlobalContext) as GlobalState
+  const { difficulty, changeGameStatus } = useContext(GlobalContext) as GlobalState
 
   let { arr, minesPositions } = generateBoardArray(difficulty)
   
@@ -52,6 +52,10 @@ export default function Board() {
         setTrackArr([...trackingArray])
       }, ind * 300);
     })
+    changeGameStatus('lose');
+    setTimeout(() => {
+      sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray))
+    }, minesPositions.length * (minesPositions.length * 300 + 300) / 2 + 1);
   }
 
   const cellClick = (x: number, y: number) => {

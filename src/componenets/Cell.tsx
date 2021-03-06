@@ -13,7 +13,7 @@ interface Props {
 
 export default function Cell({ data, x, y }: Props) {
   const {trackingArray, cellClick, minesPositions} = useContext(BoardContext) as BoardContextType
-  const { toggler, remainingMines, setRemainingMines, timer, startTimer } = useContext(GlobalContext) as GlobalState;
+  const { toggler, remainingMines, setRemainingMines, timer, startTimer, changeGameStatus } = useContext(GlobalContext) as GlobalState;
 
   const [flag, setFlag] = useState(Boolean(trackingArray[x][y] === -1));
 
@@ -31,13 +31,16 @@ export default function Cell({ data, x, y }: Props) {
     if (trackingArray[x][y] === 0) setRemainingMines(remainingMines + 1)
     else if (trackingArray[x][y] === -1) setRemainingMines(remainingMines - 1)
     sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray));
-    if (remainingMines < 2) {
-      console.log('game won', checkForWon(trackingArray, minesPositions))
+    if (remainingMines < 2 && checkForWon(trackingArray, minesPositions)) {
+      changeGameStatus('won')
     }
   }
 
   const clickHandler = () => {
-    if (timer === 0) startTimer()
+    if (timer === 0) {
+      startTimer()
+      changeGameStatus('playing')
+    }
 
     if (!toggler) {
       changeFlagStatus()

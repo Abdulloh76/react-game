@@ -17,6 +17,8 @@ export interface GlobalState {
   setTheme: (param: string) => void
   startClick: boolean
   triggerStartClickOption: (param: boolean) => void
+  gameStatus: string;
+  changeGameStatus: (param: string) => void
 }
 
 interface Props {
@@ -30,6 +32,10 @@ export default function GlobalProvider({ children }: Props) {
   const [toggler, setToggler] = useState(true) // true->mine, false->flag
   const passed = JSON.parse(sessionStorage.getItem('timer') as string) || 0;
   const [timer, setRunTimer] = useState(passed)
+
+  const [gameStatus, setGameStatus] = useState(JSON.parse(sessionStorage.getItem('gameStatus') as string) || 'waiting')
+  // waiting, playing, paused, won, lose
+  sessionStorage.setItem('gameStatus', JSON.stringify(gameStatus))
 
   // game options
   const [difficulty, setDifficulty] = useState([9,9,10])
@@ -57,6 +63,8 @@ export default function GlobalProvider({ children }: Props) {
   const setTheme = (theme: string) => setBoardTheme(theme)
   const triggerStartClickOption = (trigger: boolean) => setStartClick(trigger);
 
+  const changeGameStatus = (status: string) => setGameStatus(status)
+  
   return (
     <GlobalContext.Provider value={{
       modalShow,
@@ -72,7 +80,9 @@ export default function GlobalProvider({ children }: Props) {
       boardTheme,
       setTheme,
       startClick,
-      triggerStartClickOption
+      triggerStartClickOption,
+      gameStatus,
+      changeGameStatus,
     }}>
       {children}
     </GlobalContext.Provider>
