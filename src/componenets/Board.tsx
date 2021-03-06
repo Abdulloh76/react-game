@@ -4,15 +4,21 @@ import Cell from './Cell';
 import '../styles/board.scss';
 import { GlobalContext, GlobalState } from './GlobalOptions';
 
-export const BoardContext = React.createContext<
-  [Number[][], (x: number, y: number) => void]
->([[[]], (x: number, y: number) => {}]);
+export interface BoardContextType {
+  trackingArray: number[][];
+  cellClick: (x: number, y: number) => void;
+  minesPositions: { x: number, y: number }[];
+}
+
+export const BoardContext = React.createContext<BoardContextType | null>(null);
 
 export default function Board() {
   const { difficulty } = useContext(GlobalContext) as GlobalState
 
-  const LSboard = JSON.parse(sessionStorage.getItem('boardArray') as string);
-  const boardArray: number[][] = LSboard || generateBoardArray(difficulty);
+  let { arr, minesPositions } = generateBoardArray(difficulty)
+  
+  const boardArray: number[][] = JSON.parse(sessionStorage.getItem('boardArray') as string) || arr;
+  minesPositions = JSON.parse(sessionStorage.getItem('minesPositions') as string) || minesPositions
 
   const [trackingArray, setTrackArr] = useState(
     JSON.parse(sessionStorage.getItem('trackingArray') as string) ||
@@ -39,13 +45,24 @@ export default function Board() {
     }
   };
 
+  const mineClicked = () => {
+    minesPositions.forEach((el, ind) => {
+      setTimeout(() => {
+        trackingArray[el.x][el.y] = 1
+        setTrackArr([...trackingArray])
+      }, ind * 300);
+    })
+  }
+
   const cellClick = (x: number, y: number) => {
+    if (boardArray[x][y] === -1) mineClicked()
     spreading(x, y);
     setTrackArr([...trackingArray]);
   };
 
   useEffect(() => {
     sessionStorage.setItem('boardArray', JSON.stringify(boardArray));
+    sessionStorage.setItem('minesPositions', JSON.stringify(minesPositions));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -54,7 +71,7 @@ export default function Board() {
   });
 
   return (
-    <BoardContext.Provider value={[trackingArray, cellClick]}>
+    <BoardContext.Provider value={{trackingArray, cellClick, minesPositions}}>
       <div className='board'>
         {boardArray.map((row: number[], i) => (
           <div key={i} className='board__row'>

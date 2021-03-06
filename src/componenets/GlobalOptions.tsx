@@ -25,14 +25,14 @@ interface Props {
 
 export default function GlobalProvider({ children }: Props) {
   const [modalShow, setModal] = useState(false)
-  const remMines = JSON.parse(sessionStorage.getItem('mines') as string) || 40;
+  const remMines = JSON.parse(sessionStorage.getItem('mines') as string) || 10;
   const [remainingMines, setMinesNumber] = useState(remMines)
   const [toggler, setToggler] = useState(true) // true->mine, false->flag
   const passed = JSON.parse(sessionStorage.getItem('timer') as string) || 0;
   const [timer, setRunTimer] = useState(passed)
 
   // game options
-  const [difficulty, setDifficulty] = useState([16,16,40])
+  const [difficulty, setDifficulty] = useState([9,9,10])
   const [boardTheme, setBoardTheme] = useState('grey')
   const [startClick, setStartClick] = useState(false)
 
