@@ -23,7 +23,7 @@ export default function Cell({ data, x, y }: Props) {
     changeGameStatus,
     trackingArray,
   } = useContext(GlobalContext) as GlobalState;
-  const timer = JSON.parse(sessionStorage.getItem('timer') as string);
+  const timer = JSON.parse(sessionStorage.getItem('timer') as string) || 0;
   const [flag, setFlag] = useState(Boolean(trackingArray[x][y] === -1));
 
   const content = (value: number) => {
@@ -43,7 +43,6 @@ export default function Cell({ data, x, y }: Props) {
     if (remainingMines < 2 && checkForWon(trackingArray, minesPositions)) {
       changeGameStatus('won');
       alert('you won');
-      // changeTrackArr(true)
     }
   };
 
