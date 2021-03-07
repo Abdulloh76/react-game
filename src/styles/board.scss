@@ -1,0 +1,67 @@
+.board {
+  width: min-content;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.6rem;
+
+  &__row {
+    display: flex;
+  }
+
+  &__cell {
+    position: relative;
+    box-sizing: border-box;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+
+    cursor: pointer;
+    user-select: none;
+
+    &::after {
+      content: '';
+      box-sizing: border-box;
+      position: absolute;
+      z-index: 3;
+      width: 30px;
+      height: 30px;
+      background: rgb(136, 136, 136);
+      transition: opacity 0.5s ease;
+
+      border-width: 4px;
+      border-style: solid;
+      border-color: rgb(220, 220, 220) rgb(51, 51, 51) rgb(51, 51, 51)
+        rgb(220, 220, 220);
+    }
+
+    svg {
+      width: 80%;
+      height: 80%;
+    }
+
+    .redflag {
+      position: absolute;
+      z-index: 10;
+    }
+  }
+}
+
+.cell-visited {
+  background-color: rgb(85, 85, 85);
+  border: 1px solid black;
+  cursor: default;
+  &::after {
+    opacity: 0;
+  }
+  .redflag {
+    display: none;
+  }
+}

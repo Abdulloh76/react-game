@@ -1,0 +1,70 @@
+.header {
+  width: 60%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 2.5rem;
+  font-family: 'Lato';
+
+  & > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
+    svg {
+      width: 85%;
+    }
+  }
+
+  &__mines-number {
+    // flex-basis: ;
+    border: 1px solid grey;
+    background: #000;
+    color: blue;
+  }
+
+  &__toggler {
+    border: 1px solid grey;
+    height: 50px;
+    width: 50px;
+    background: #000;
+    color: blue;
+    border-radius: 50%;
+  }
+
+  &__new-game {
+    border: 1px solid grey;
+    height: 50px;
+    width: 50px;
+    background: #000;
+    color: blue;
+    border-radius: 50%;
+  }
+
+  &__settings {
+    border: 1px solid grey;
+    background: #000;
+    height: 50px;
+    width: 50px;
+    color: blue;
+    border-radius: 50%;
+  }
+
+  &__timer {
+    border: 1px solid grey;
+    background: #000;
+    color: blue;
+  }
+
+  &__top-scores {
+    height: 50px;
+    width: 50px;
+    border: 1px solid grey;
+    background: #000;
+    color: blue;
+  }
+}
