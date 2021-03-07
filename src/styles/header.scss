@@ -26,7 +26,7 @@
     background: #000;
     color: blue;
   }
-  
+
   &__toggler {
     border: 1px solid grey;
     height: 50px;
@@ -35,7 +35,7 @@
     color: blue;
     border-radius: 50%;
   }
-  
+
   &__new-game {
     border: 1px solid grey;
     height: 50px;
@@ -44,7 +44,7 @@
     color: blue;
     border-radius: 50%;
   }
-  
+
   &__settings {
     border: 1px solid grey;
     background: #000;
@@ -53,13 +53,13 @@
     color: blue;
     border-radius: 50%;
   }
-  
+
   &__timer {
     border: 1px solid grey;
     background: #000;
     color: blue;
   }
-  
+
   &__top-scores {
     height: 50px;
     width: 50px;
@@ -67,5 +67,4 @@
     background: #000;
     color: blue;
   }
-
 }

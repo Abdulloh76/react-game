@@ -2,7 +2,7 @@ export default function generateBoardArray(options: number[]) {
   const [width, height, minesNumber] = options;
   const arr: number[][] = Array.from(Array(height), () => Array(width).fill(0));
   let remainingMines: number = minesNumber;
-  const minesPositions: { x: number; y: number; }[] =[]
+  const minesPositions: { x: number; y: number }[] = [];
 
   while (remainingMines !== 0) {
     const x: number = Math.floor(Math.random() * width);
@@ -11,7 +11,7 @@ export default function generateBoardArray(options: number[]) {
     if (arr[x][y] !== -1) {
       arr[x][y] = -1;
       remainingMines -= 1;
-      minesPositions.push({ x, y })
+      minesPositions.push({ x, y });
 
       if (x + 1 < width) {
         if (y + 1 < height && arr[x + 1][y + 1] !== -1) arr[x + 1][y + 1] += 1;
