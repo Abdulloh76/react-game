@@ -12,9 +12,9 @@ interface Props {
 }
 
 export default function Cell({ data, x, y }: Props) {
-  const {trackingArray, cellClick, minesPositions} = useContext(BoardContext) as BoardContextType
-  const { toggler, remainingMines, setRemainingMines, timer, startTimer, changeGameStatus } = useContext(GlobalContext) as GlobalState;
-
+  const { cellClick, minesPositions } = useContext(BoardContext) as BoardContextType
+  const { toggler, remainingMines, setRemainingMines, setTimer, changeGameStatus, trackingArray } = useContext(GlobalContext) as GlobalState;
+  const timer = JSON.parse(sessionStorage.getItem('timer') as string)
   const [flag, setFlag] = useState(Boolean(trackingArray[x][y] === -1));
 
   const content = (value: number) => {
@@ -33,12 +33,14 @@ export default function Cell({ data, x, y }: Props) {
     sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray));
     if (remainingMines < 2 && checkForWon(trackingArray, minesPositions)) {
       changeGameStatus('won')
+      alert('you won')
+      // changeTrackArr(true)
     }
   }
 
   const clickHandler = () => {
     if (timer === 0) {
-      startTimer()
+      setTimer()
       changeGameStatus('playing')
     }
 
@@ -60,7 +62,7 @@ export default function Cell({ data, x, y }: Props) {
       onContextMenu={(e) => {
         e.preventDefault()
         changeFlagStatus()
-        if (timer === 0) startTimer()
+        if (timer === 0) setTimer()
       }}
     >
       {content(data)}

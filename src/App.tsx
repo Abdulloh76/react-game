@@ -10,6 +10,7 @@ import Timer from './componenets/Timer'
 import TopScores from './componenets/TopScores';
 import RecordGame from './componenets/RecordGame';
 import Board from './componenets/Board'
+import './styles/modal.scss'
 
 export default function App() {
 

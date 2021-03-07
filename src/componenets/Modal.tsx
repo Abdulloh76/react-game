@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import '../styles/modal.scss'
 
 interface Props {
   title: string;

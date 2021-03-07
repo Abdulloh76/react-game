@@ -5,7 +5,17 @@ import { ReactComponent as LoseIcon } from '../assets/lose.svg'
 import { GlobalContext, GlobalState } from './GlobalOptions'
 
 export default function NewGame() {
-  const { gameStatus } = useContext(GlobalContext) as GlobalState
+  const { gameStatus, changeGameStatus, setTimer, changeDifficulty, changeTrackArr, newBoard } = useContext(GlobalContext) as GlobalState
+
+  const clickHandler = () => {
+    sessionStorage.clear()
+    changeGameStatus('waiting')
+    setTimer(0)
+    changeDifficulty('easy')
+    changeTrackArr(true)
+    newBoard();
+    // sessionStorage.setItem('trackingArray', )
+  }
 
   const chooseIcon = () => {
     switch (gameStatus) {
@@ -16,7 +26,7 @@ export default function NewGame() {
   }
 
   return (
-    <div className="header__new-game">
+    <div className="header__new-game" onClick={clickHandler}>
       {chooseIcon()}
     </div>
   )

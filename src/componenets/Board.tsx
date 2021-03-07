@@ -1,11 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import generateBoardArray from '../utils/generateBoardArray';
+import React, { useContext, useEffect } from 'react';
 import Cell from './Cell';
 import '../styles/board.scss';
 import { GlobalContext, GlobalState } from './GlobalOptions';
 
 export interface BoardContextType {
-  trackingArray: number[][];
   cellClick: (x: number, y: number) => void;
   minesPositions: { x: number, y: number }[];
 }
@@ -13,17 +11,15 @@ export interface BoardContextType {
 export const BoardContext = React.createContext<BoardContextType | null>(null);
 
 export default function Board() {
-  const { difficulty, changeGameStatus } = useContext(GlobalContext) as GlobalState
-
-  let { arr, minesPositions } = generateBoardArray(difficulty)
+  const { changeGameStatus, trackingArray, changeTrackArr, board } = useContext(GlobalContext) as GlobalState
   
-  const boardArray: number[][] = JSON.parse(sessionStorage.getItem('boardArray') as string) || arr;
-  minesPositions = JSON.parse(sessionStorage.getItem('minesPositions') as string) || minesPositions
+  const boardArray: number[][] = JSON.parse(sessionStorage.getItem('boardArray') as string) || board.arr;
+  const minesPositions = JSON.parse(sessionStorage.getItem('minesPositions') as string) || board.minesPositions
 
-  const [trackingArray, setTrackArr] = useState(
-    JSON.parse(sessionStorage.getItem('trackingArray') as string) ||
-      Array.from(Array(difficulty[0]), () => Array(difficulty[1]).fill(0))
-  );
+
+  useEffect(() => {
+    sessionStorage.setItem('boardArray', JSON.stringify(boardArray))
+  }, [boardArray])
 
   const spreading = (x: number, y: number) => {
     if (
@@ -46,22 +42,23 @@ export default function Board() {
   };
 
   const mineClicked = () => {
-    minesPositions.forEach((el, ind) => {
+    minesPositions.forEach((el: {x:number, y:number}, ind: number) => {
       setTimeout(() => {
         trackingArray[el.x][el.y] = 1
-        setTrackArr([...trackingArray])
+        changeTrackArr()
       }, ind * 300);
     })
     changeGameStatus('lose');
     setTimeout(() => {
+      alert('you lose!')
       sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray))
-    }, minesPositions.length * (minesPositions.length * 300 + 300) / 2 + 1);
+    }, (minesPositions.length * (minesPositions.length * 300 + 300) / 2 + 1) / 4);
   }
 
   const cellClick = (x: number, y: number) => {
     if (boardArray[x][y] === -1) mineClicked()
     spreading(x, y);
-    setTrackArr([...trackingArray]);
+    changeTrackArr()
   };
 
   useEffect(() => {
@@ -70,14 +67,10 @@ export default function Board() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  window.addEventListener('beforeunload', () => {
-    // sessionStorage.setItem('trackingArray', JSON.stringify(trackingArray))
-  });
-
   return (
-    <BoardContext.Provider value={{trackingArray, cellClick, minesPositions}}>
+    <BoardContext.Provider value={{cellClick, minesPositions}}>
       <div className='board'>
-        {boardArray.map((row: number[], i) => (
+        {boardArray.map((row: number[], i: number) => (
           <div key={i} className='board__row'>
             {row.map((el: number, j) => (
               <Cell data={el} key={row.length * i + j} x={i} y={j} />

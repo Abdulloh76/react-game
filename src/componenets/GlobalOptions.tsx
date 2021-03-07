@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import generateBoardArray from '../utils/generateBoardArray';
 
 export const GlobalContext = React.createContext<GlobalState | null>(null)
 
@@ -10,7 +11,7 @@ export interface GlobalState {
   toggler: boolean
   changeToggler: (param: boolean) => void
   timer: number
-  startTimer: () => void
+  setTimer: (time?: number) => void
   difficulty: number[]
   changeDifficulty: (param: string) => void
   boardTheme: string
@@ -19,6 +20,10 @@ export interface GlobalState {
   triggerStartClickOption: (param: boolean) => void
   gameStatus: string;
   changeGameStatus: (param: string) => void
+  trackingArray: number[][]
+  changeTrackArr: (clear?: boolean) => void
+  board: { arr: number[][], minesPositions: {x: number, y: number}[] }
+  newBoard: () => void
 }
 
 interface Props {
@@ -32,6 +37,7 @@ export default function GlobalProvider({ children }: Props) {
   const [toggler, setToggler] = useState(true) // true->mine, false->flag
   const passed = JSON.parse(sessionStorage.getItem('timer') as string) || 0;
   const [timer, setRunTimer] = useState(passed)
+  sessionStorage.setItem('timer', JSON.stringify(timer))
 
   const [gameStatus, setGameStatus] = useState(JSON.parse(sessionStorage.getItem('gameStatus') as string) || 'waiting')
   // waiting, playing, paused, won, lose
@@ -42,15 +48,38 @@ export default function GlobalProvider({ children }: Props) {
   const [boardTheme, setBoardTheme] = useState('grey')
   const [startClick, setStartClick] = useState(false)
 
+
+  const [trackingArray, setTrackArr] = useState(
+    JSON.parse(sessionStorage.getItem('trackingArray') as string) ||
+      Array.from(Array(difficulty[0]), () => Array(difficulty[1]).fill(0))
+  );
+
+  const changeTrackArr = (clear?: boolean) => {
+    if(clear) setTrackArr(Array.from(Array(difficulty[0]), () => Array(difficulty[1]).fill(0)))
+    else setTrackArr([...trackingArray])
+  }
+
+  const [board, setBoard] = useState(generateBoardArray(difficulty))
+
+  const newBoard = () => setBoard(generateBoardArray(difficulty))
+
   const setModalShow = (vis: boolean) => setModal(vis)
   const setRemainingMines = (mines: number) => {
     setMinesNumber(mines)
     sessionStorage.setItem('mines', JSON.stringify(mines))
   }
   const changeToggler = (toggle: boolean) => setToggler(toggle)
-  const startTimer = () => {
-    setRunTimer(timer + 1)
-    sessionStorage.setItem('timer', JSON.stringify(timer))
+  const setTimer = (time?: number) => {
+    if (time !== undefined) {
+      setRunTimer(time)
+      setTimeout(() => {
+        setRunTimer(time)
+        sessionStorage.setItem('timer', JSON.stringify(time))
+      }, 1000);
+    } else {
+      setRunTimer(timer + 1)
+      sessionStorage.setItem('timer', JSON.stringify(timer))
+    }
   }
   const changeDifficulty = (diff: string) => {
     // 10,10,9; 16,16,40; 24,24,99
@@ -59,6 +88,8 @@ export default function GlobalProvider({ children }: Props) {
       case 'intermediate': setDifficulty([16,16,40]); break;
       case 'advanced': setDifficulty([24,24,99]); break;
     }
+    console.log('diff changed');
+    
   }
   const setTheme = (theme: string) => setBoardTheme(theme)
   const triggerStartClickOption = (trigger: boolean) => setStartClick(trigger);
@@ -74,7 +105,7 @@ export default function GlobalProvider({ children }: Props) {
       toggler,
       changeToggler,
       timer,
-      startTimer,
+      setTimer,
       difficulty,
       changeDifficulty,
       boardTheme,
@@ -83,6 +114,10 @@ export default function GlobalProvider({ children }: Props) {
       triggerStartClickOption,
       gameStatus,
       changeGameStatus,
+      trackingArray,
+      changeTrackArr,
+      board,
+      newBoard
     }}>
       {children}
     </GlobalContext.Provider>
